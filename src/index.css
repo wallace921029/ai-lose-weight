@@ -1,0 +1,252 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource/zcool-kuaile";
+
+@custom-variant dark (&:is(.dark *));
+
+/* shadcn 风格 token → Tailwind 工具类映射（shadcn 包的 tailwind.css 是空文件，必须自己桥接） */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@theme {
+  --font-sans: "ZCOOL KuaiLe", "Geist Variable", "Yuanti SC", "YouYuan", -apple-system,
+    "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif;
+  /* 番茄珊瑚红：火苗与主按钮 */
+  --color-brand: #fa5f4a;
+  --color-brand-deep: #e2452f;
+  --color-brand-soft: #ffc0b3;
+  /* 薄荷绿：达标与好消息 */
+  --color-good: #35b183;
+  --color-good-deep: #1f8f63;
+  /* 芒果黄：提醒 */
+  --color-warn: #ee9414;
+  /* 火苗橙 */
+  --color-ember: #ff8a3d;
+  /* 点缀天蓝 */
+  --color-sky: #79bfe9;
+  /* 纸与墨 */
+  --color-paper: #fffdf6;
+  --color-paper-2: #ffedca;
+  --color-cream: #fdf3df;
+  --color-ink: #43352a;
+  --color-ink-soft: #8f7c66;
+  --radius: 1rem;
+}
+
+:root {
+  --background: #fdf3df;
+  --foreground: #43352a;
+  --card: #fffdf6;
+  --card-foreground: #43352a;
+  --popover: #fffdf6;
+  --popover-foreground: #43352a;
+  --primary: #fa5f4a;
+  --primary-foreground: #ffffff;
+  --secondary: #f7ead0;
+  --secondary-foreground: #6b5a48;
+  --muted: #f7ead0;
+  --muted-foreground: #8f7c66;
+  --accent: #ffedca;
+  --accent-foreground: #43352a;
+  --destructive: #e2452f;
+  --border: #43352a;
+  --input: #43352a;
+  --ring: #fa5f4a;
+  --chart-1: #fa5f4a;
+  --chart-2: #ee9414;
+  --chart-3: #35b183;
+  --chart-4: #79bfe9;
+  --chart-5: #c9a2e8;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+  text-rendering: optimizeLegibility;
+  /* 奶油纸底 + 手账点阵 */
+  background-color: var(--background);
+  background-image: radial-gradient(rgba(67, 53, 42, 0.09) 1.1px, transparent 1.1px);
+  background-size: 24px 24px;
+}
+
+/* iOS 输入不缩放 */
+input,
+select,
+textarea,
+button {
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 手绘工具类 ---------- */
+
+/* 不规则「抖动」圆角：像手画的框 */
+.wob-sm {
+  border-radius: 22px 12px 24px 14px / 14px 24px 12px 22px;
+}
+.wob {
+  border-radius: 30px 16px 34px 18px / 18px 34px 16px 30px;
+}
+.wob-lg {
+  border-radius: 44px 22px 48px 24px / 24px 48px 22px 44px;
+}
+/* 反向抖动，错开相邻元素 */
+.wob-r {
+  border-radius: 16px 30px 18px 34px / 34px 18px 30px 16px;
+}
+
+/* 卡通实体投影（无模糊，像贴纸） */
+.ink-shadow-xs {
+  box-shadow: 2px 2px 0 0 var(--color-ink);
+}
+.ink-shadow {
+  box-shadow: 3px 3px 0 0 var(--color-ink);
+}
+.ink-shadow-lg {
+  box-shadow: 5px 5px 0 0 var(--color-ink);
+}
+/* 按压：影子收起来 + 元素下沉 */
+.press {
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+}
+.press:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 var(--color-ink);
+}
+
+/* 虚线手账分割线 */
+.doodle-line {
+  border-top: 2px dashed rgba(67, 53, 42, 0.35);
+}
+
+/* 手绘波浪下划线（标题用） */
+.squiggle {
+  position: relative;
+  padding-bottom: 6px;
+}
+.squiggle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='7' viewBox='0 0 28 7'%3E%3Cpath d='M1 4.5 Q 4.5 1, 8 4 T 15 4 T 22 4 T 29 4' fill='none' stroke='%23fa5f4a' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x left bottom / 28px 7px;
+}
+
+/* 军令状纸张 */
+.paper {
+  background:
+    radial-gradient(120% 90% at 20% 0%, #fffdf3 0%, #fdf3df 55%, #f7e6c4 100%);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  box-shadow: inset 0 0 0 1px rgba(67, 53, 42, 0.08), 4px 4px 0 0 rgba(67, 53, 42, 0.85);
+}
+
+.paper-rule {
+  border-color: rgba(67, 53, 42, 0.45);
+}
+
+/* 胶带贴纸装饰 */
+.tape {
+  position: absolute;
+  width: 74px;
+  height: 22px;
+  background: rgba(255, 214, 133, 0.85);
+  border-left: 2px dashed rgba(67, 53, 42, 0.3);
+  border-right: 2px dashed rgba(67, 53, 42, 0.3);
+  transform: rotate(-4deg);
+}
+
+/* 火苗动画 */
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+  50% { transform: scale(1.08) rotate(2deg); opacity: 0.92; }
+}
+.flame {
+  animation: flicker 1.6s ease-in-out infinite;
+  transform-origin: 50% 80%;
+}
+
+@keyframes pulse-red {
+  0%, 100% { background-color: rgba(226, 69, 47, 0.95); }
+  50% { background-color: rgba(250, 95, 74, 0.95); }
+}
+.alarm {
+  animation: pulse-red 1.8s ease-in-out infinite;
+}
+
+/* 印章 */
+@keyframes stamp-in {
+  0% { transform: scale(2.2) rotate(-24deg); opacity: 0; }
+  60% { transform: scale(0.94) rotate(-11deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-12deg); opacity: 1; }
+}
+.stamp-anim {
+  animation: stamp-in 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+/* 轻微摇摆（空状态小表情用） */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+.wiggle {
+  animation: wiggle 2.4s ease-in-out infinite;
+}
+
+/* 隐藏横向滚动条 */
+.no-bar::-webkit-scrollbar {
+  display: none;
+}
+.no-bar {
+  scrollbar-width: none;
+}
+
+/* 安全区 */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.mb-safe-nav {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+
+::selection {
+  background: rgba(250, 95, 74, 0.28);
+}

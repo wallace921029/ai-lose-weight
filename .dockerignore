@@ -1,0 +1,10 @@
+node_modules
+dist
+data
+backend/node_modules
+backend/data
+.git
+.screenshots
+docs
+*.log
+.DS_Store

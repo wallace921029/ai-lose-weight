@@ -1,0 +1,16 @@
+services:
+  pofu:
+    build: .
+    container_name: pofu
+    ports:
+      - "3000:3000"
+    environment:
+      - TZ=Asia/Shanghai
+      - JWT_SECRET=${JWT_SECRET:-please-change-me-in-production}
+      # AI 全局兜底（可选；用户也可在应用内「我的→配置 DeepSeek」绑定自己的 Key，优先级更高）
+      - AI_BASE_URL=${AI_BASE_URL:-}
+      - AI_API_KEY=${AI_API_KEY:-}
+      - AI_MODEL=${AI_MODEL:-deepseek-chat}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
