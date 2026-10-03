@@ -1,148 +1,150 @@
-# 破釜 · 减肥军令状
+# Pofu 破釜 · The Weight-Loss Pledge
 
-> 把退路烧掉的减肥应用。市面上普通的减肥软件只是记录工具，破釜是一套**行为约束系统**：军令状、周契约、罚金台账、信用分、公开广场、见证人。
+**English** | [简体中文](README.zh-CN.md)
 
-手机优先的 PWA，可添加到主屏幕，像原生应用一样使用。
+> The diet app that burns your escape route. Ordinary weight-loss apps are just trackers — Pofu is a **behavioral constraint system**: a signed pledge, weekly contracts, a penalty ledger, credit scores, a public square, and witnesses.
 
-## 为什么它能约束你
+Mobile-first PWA — add it to your home screen and use it like a native app.
 
-| 机制 | 规则 |
+## Why it can hold you accountable
+
+| Mechanism | Rule |
 | --- | --- |
-| **军令状** | 注册后按住 2 秒签字立状：目标体重、截止日、每周配速、罚金与去向，白纸黑字盖红章 |
-| **每日称重打卡** | 晨起上秤，历史不可改。漏称一天火焰熄灭，漏称 ≥3 天当周直接判败 |
-| **周契约** | 每周一自动生成：本周趋势线须降到「上周趋势 − 配速」。周日晚结算，差 0.1kg 也算失败 |
-| **罚金台账** | 契约失守，罚金自动入账。必须亲手标记「已缴」或「赖账」——赖账信用 -50 且广场公开 |
-| **信用分** | 0~100。达成 +5、缴罚金 +5、终局达成 +20；失守 -15、弃状 -30、赖账 -50 |
-| **广场** | 所有人的打卡、成败、赖账都是公开事件（不公开具体体重），按信用分排行 |
-| **见证人** | 指定其他用户见证你，你的失败会优先出现在他们的广场里 |
-| **弃状** | 允许当逃兵，代价是 -30 信用和一条永久的「当逃兵」公开记录 |
+| **The Pledge** | After signing up, press and hold for 2 seconds to sign: target weight, deadline, weekly pace, penalty amount and where it goes — in black and white, under a red seal |
+| **Daily weigh-in** | Step on the scale every morning; history is immutable. Miss a day and your flame goes out; miss ≥3 days in a week and the week is automatically ruled a failure |
+| **Weekly contract** | Auto-generated every Monday: this week's trend line must reach "last week's trend − pace". Settled Sunday night — falling short by even 0.1 kg is a breach |
+| **Penalty ledger** | Breach a contract and the penalty is booked automatically. You must personally mark it "Paid" or "Defaulted" — defaulting costs −50 credit and is published on the square |
+| **Credit score** | 0–100. Weekly success +5, paying a penalty +5, final success +20; breach −15, abandoning the pledge −30, defaulting −50 |
+| **The Square** | Everyone's check-ins, wins, losses and defaults are public events (actual weights never shown), ranked by credit score |
+| **Witnesses** | Designate other users to witness you — your failures surface first in their square |
+| **Abandonment** | Deserting is allowed, at the cost of −30 credit and a permanent public "deserter" record |
 
-体重用 **EWMA 趋势线**判定（过滤水重噪音），热量预算按 **Mifflin-St Jeor TDEE − 配速亏空**计算，内置 120+ 常见食物与 29 种运动的估算库。
+Weight is judged by an **EWMA trend line** (filtering water-weight noise); the calorie budget follows **Mifflin-St Jeor TDEE − pace deficit**, with a built-in library of 120+ common foods and 29 exercises.
 
-## AI 对接（多厂商，创始人统一配置）
+## AI Integration (multi-provider, configured once by the founder)
 
-**所有 AI 模型由创始人账号统一配置**，全营共用。入口：「我的」→「AI 教练 · 模型配置」（独立配置页，两层结构）：
+**All AI models are configured by the founder account** and shared camp-wide. Entry: Me → AI Coach · Model Config (a dedicated page with a two-level structure):
 
-1. **服务商**：六家厂商各填一次 API Key（保存时远程校验；接入地址默认官方、可自定义），三家能力共用
-2. **能力分配**：对话 / TTS / ASR 各自绑定一家已配置的厂商，从它拉取的模型列表里挑选（TTS 可选音色）；删除某家服务商会自动清掉引用它的能力
+1. **Providers**: one API key per provider (remotely validated on save; official endpoints by default, customizable) — one provider's key can serve multiple capabilities
+2. **Capability assignment**: bind chat / TTS / ASR each to a configured provider and pick from its live model list (TTS includes voice selection); deleting a provider automatically clears capabilities bound to it
 
-- **对话模型**：教练日报 / 教练对话 / AI 记饮食 / AI 记运动
-- **语音合成 TTS**：今日页教练简报「🔊 听」按钮朗读
-- **语音识别 ASR**：「吃了/动了」弹层的 🎙 录音转文字（未配置时回落浏览器 Web Speech）
+- **Chat model**: coach daily briefing / coach chat / AI food logging / AI exercise logging
+- **TTS**: the 🔊 "Listen" button on the Today-page coach briefing
+- **ASR**: 🎙 voice-to-text in the food/exercise sheets (falls back to the browser's Web Speech API when unconfigured)
 
-内置六家官方 API（OpenAI 兼容，接入地址可自定义）：
+Six official providers built in (OpenAI-compatible, custom endpoints supported):
 
-| 服务商 | 对话 | TTS | ASR |
+| Provider | Chat | TTS | ASR |
 | --- | --- | --- | --- |
-| 阿里云百炼（DashScope） | qwen 系列 | cosyvoice | paraformer / sensevoice |
-| Moonshot Kimi | kimi 系列 | — | — |
-| 智谱 BigModel | glm 系列 | cogtts | glm-asr |
+| Alibaba Cloud Bailian (DashScope) | qwen series | cosyvoice | paraformer / sensevoice |
+| Moonshot Kimi | kimi series | — | — |
+| Zhipu BigModel | glm series | cogtts | glm-asr |
 | DeepSeek | deepseek-chat / reasoner | — | — |
-| 火山方舟 | doubao 系列 | doubao-tts | doubao-asr |
-| 小米 MiMo | MiMo 系列 | MiMo-TTS | — |
+| Volcano Ark | doubao series | doubao-tts | doubao-asr |
+| Xiaomi MiMo | MiMo series | MiMo-TTS | — |
 
-- Key 只存在服务器数据库，前端只显示掩码，调用全部经后端代理
-- 保存时后端先远程校验 Key 与模型有效性（厂商未开放 `/models` 时跳过校验）
-- 三个能力都可不配：对话未配置自动降级为规则教练，TTS/ASR 未配置按钮自动隐藏
-- 服务器还可用环境变量做对话模型的**全局兜底**（应用内未配置时生效）：`AI_BASE_URL=… AI_API_KEY=… AI_MODEL=…`
+- Keys live only in the server database; the frontend shows masked values only, and every call is proxied through the backend
+- On save, the backend remotely validates the key and model (skipped for providers that don't expose `/models`)
+- All three capabilities are optional: without chat, the rule-based coach takes over; without TTS/ASR the buttons hide themselves
+- The server can also provide a **global fallback** chat model via environment variables (used when nothing is configured in-app): `AI_BASE_URL=… AI_API_KEY=… AI_MODEL=…`
 
-对话模型的入口是**全局可拖拽的教练头像**（AI 未配置时不显示）：点击即可对话，也可以直接吩咐记账——「帮我记录下体重，65千克」「中午吃了一碗五香牛肉面」「傍晚跑了半小时」。教练自动判断意图，弹出**卡片式确认**（体重 65.0kg / 饮食条目与热量 / 运动分钟与消耗），点「确认入库」才真正落账，取消不记录；闲聊提问则正常对话。头像可拖到屏幕任意位置，位置会被记住。
+The chat entry point is a **globally draggable coach avatar** (hidden when AI is unconfigured): tap to chat, or just tell it to log for you — "log my weight, 65 kg", "had a bowl of spiced beef noodles for lunch", "ran for half an hour at dusk". The coach detects the intent and pops a **card-style confirmation** (weight 65.0 kg / food items and calories / exercise minutes and burn); nothing is recorded until you tap "Confirm", and cancel records nothing; casual questions are answered as normal chat. The avatar can be dragged anywhere on screen and its position is remembered.
 
-配额（防滥用）：饮食/运动解析与教练指令合计 40 次/天/人、对话 80 条/天/人、TTS 30 次/天/人、ASR 60 次/天/人。
+Quotas (abuse protection): food/exercise parsing and coach commands combined 40/day/person, chat 80 messages/day/person, TTS 30/day/person, ASR 60/day/person.
 
-## 账号体系（创始人 + 邀请码注册）
+## Accounts (founder + invite-code registration)
 
-在项目根目录 `.env`（参考 `.env.example`，改完重启生效）配置：
+Configure in the project root `.env` (see `.env.example`; restart to apply):
 
 ```bash
-# 创始人：唯一能配置 AI 模型的账号，启动时自动创建/改密
+# Founder: the only account allowed to configure AI models; auto-created/re-passworded on startup
 FOUNDER_USERNAME=founder
-FOUNDER_PASSWORD=改一个狠的密码
+FOUNDER_PASSWORD=pick-a-hard-password
 
-# 注册邀请码：逗号分隔可配多个；不配置则注册完全关闭
-INVITE_CODE=POFU-2026,朋友专用
+# Registration invite codes: comma-separated, multiple allowed; unset = registration fully closed
+INVITE_CODE=POFU-2026,friends-only
 
-# JWT 密钥（生产必改）
-JWT_SECRET=随机长字符串
+# JWT secret (must change in production)
+JWT_SECRET=a-long-random-string
 ```
 
-- 其余人注册必须持有效邀请码（「注册 · 入营」页填写），大小写不敏感
-- 创始人在「我的」页有「创始人」徽章，AI 配置入口只有创始人可见
-- `.env` 已被 gitignore，不会进仓库；docker 部署时用环境变量注入即可（优先级高于 .env）
+- Everyone else signs up with a valid invite code (entered on the Register · Enlist page), case-insensitive
+- The founder has a "Founder" badge on the Me page; the AI config entry is founder-only
+- `.env` is gitignored and never committed; under Docker, inject via environment variables (they take precedence over `.env`)
 
-## 好友与每日攀比
+## Friends & the daily rivalry board
 
-「广场 → 好友」：按用户名发申请 → 对方同意（互相申请会自动成交）→ **今日攀比榜**。好友之间每天比这些：
+Square → Friends: send a request by username → the other side accepts (mutual requests auto-match) → the **daily rivalry board**. Friends compare these every day:
 
-| 可见 | 不可见（隐私） |
+| Visible | Never visible (privacy) |
 | --- | --- |
-| 今日是否打卡、连续打卡天数、信用分、今日运动分钟数、热量纪律（✓/超支）、周契约状态 | **体重、趋势、目标、具体热量数值** 一律互不可见 |
+| Checked in today, streak length, credit score, today's exercise minutes, calorie discipline (✓ / over), weekly contract status | **Weight, trend, targets and actual calorie figures** are never visible between friends |
 
-广场动态也支持「只看好友」筛选；成为好友会发一条公开的 🤝 事件。
+The square feed also has a "friends only" filter; becoming friends posts a public 🤝 event.
 
-## 快速开始（本地开发）
+## Quick Start (local development)
 
 ```bash
-npm install                # 前端依赖
-npm --prefix backend install   # 后端依赖
-npm run dev                # 同时启动 vite(5173) + API(3000)
+npm install                     # frontend deps
+npm --prefix backend install    # backend deps
+npm run dev                     # starts vite (5173) + API (3000) together
 ```
 
-生产模式（单进程，后端直接托管构建产物）：
+Production mode (single process, the backend serves the built assets):
 
 ```bash
 npm run build
-npm start                  # http://localhost:3000
+npm start                       # http://localhost:3000
 ```
 
-演示数据（三个有历史的演示账号）：
+Demo data (three demo accounts with history):
 
 ```bash
 npm run seed
-# demo1 / demo123456  铁头娃（30 天连胜，4 个成功周，信用满分）
-# demo2 / demo123456  阿香（稳步进行中）
-# demo3 / demo123456  老K（上周失守，¥100 罚金待缴）
+# demo1 / demo123456   铁头娃 Iron Head (30-day streak, 4 successful weeks, perfect credit)
+# demo2 / demo123456   阿香 A-Xiang (steady progress)
+# demo3 / demo123456   老K Old K (breached last week, ¥100 penalty unpaid)
 ```
 
-测试：`npm test`（结算引擎单元测试 + HTTP 全链路冒烟 + AI 全链路，12 项）
+Tests: `npm test` (settlement-engine unit tests + full HTTP smoke + full AI pipeline — 12 tests)
 
-## Docker 部署
+## Docker Deployment
 
 ```bash
 JWT_SECRET=$(openssl rand -hex 32) docker compose up -d --build
 ```
 
-- 访问 `http://<服务器IP>:3000`
-- SQLite 数据持久化在 `./data/`（备份这个目录就是备份全部）
-- 环境变量：`JWT_SECRET`（生产必改）、`TZ`（默认 Asia/Shanghai）
+- Visit `http://<server-ip>:3000`
+- SQLite data persists in `./data/` (backing up this directory backs up everything)
+- Environment variables: `JWT_SECRET` (must change in production), `TZ` (defaults to Asia/Shanghai)
 
-## 添加到主屏幕
+## Add to Home Screen
 
-- **iOS Safari**：分享按钮 → 添加到主屏幕
-- **Android Chrome**：菜单 ⋮ → 安装应用
+- **iOS Safari**: Share button → Add to Home Screen
+- **Android Chrome**: menu ⋮ → Install app
 
-应用内「我的」页有分步引导；安装后以独立窗口运行，离线可打开应用壳（数据需联网）。
+The Me page has step-by-step guidance; after installing, the app runs in its own window, and the app shell opens offline (data needs a connection).
 
-## 技术架构
-
-```
-frontend  React 19 + TypeScript + Vite + Tailwind v4（移动优先，手写组件，无 UI 框架依赖）
-backend   Node.js 24 + Express + node:sqlite（内置 SQLite，零原生依赖）+ JWT 多用户认证
-deploy    Docker multi-stage + docker-compose，数据卷挂载
-```
-
-关键目录：
+## Tech Stack
 
 ```
-backend/src/logic.mjs     结算引擎：周契约结算、终局裁定、EWMA 趋势、TDEE、教练文案
-backend/src/routes.mjs    全部 REST API（zod 校验）
-src/pages/                今日 / 记录 / 契约 / 广场 / 我的 / 入营立状
-src/components/           军令状卡片(印章)、体重曲线(SVG)、热量环、底部弹层
-scripts/                  图标生成(纯 Node PNG 编码)、演示数据种子
+frontend  React 19 + TypeScript + Vite + Tailwind v4 (mobile-first, hand-written components, no UI framework)
+backend   Node.js 24 + Express + node:sqlite (built-in SQLite, zero native dependencies) + JWT multi-user auth
+deploy    Docker multi-stage + docker-compose, volume-mounted data
 ```
 
-## 隐私说明
+Key directories:
 
-注册即同意：称重打卡、契约成败、信用分以事件形式在广场公开；**具体体重数字不公开**。数据全部存于你自己的服务器。
+```
+backend/src/logic.mjs     settlement engine: weekly contract settlement, final ruling, EWMA trend, TDEE, coach copy
+backend/src/routes.mjs    all REST APIs (zod-validated)
+src/pages/                Today / Log / Contract / Square / Me / Enlist & Pledge
+src/components/           pledge card (seal), weight curve (SVG), calorie ring, bottom sheets
+scripts/                  icon generation (pure-Node PNG encoding), demo seed
+```
 
-本应用不提供医疗建议。每周减重超过 1kg 有健康风险，应用内已作提示。
+## Privacy
+
+By signing up you agree that weigh-ins, contract outcomes and credit scores are published on the square as events; **actual weight numbers are never public**. All data stays on your own server.
+
+This app does not provide medical advice. Losing more than 1 kg per week carries health risks; the app warns about this in-app.
