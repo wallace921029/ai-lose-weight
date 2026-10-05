@@ -45,10 +45,10 @@ if (-not (Test-Path "$Root\.env") -and (Test-Path "$Root\.env.example")) {
     Write-Host '已从 .env.example 创建 .env，邀请码/创始人密码等按需修改（.env 已 gitignore）'
 }
 
-# ---- 4. 启动：vite(5173，/api 代理到 3000) + 后端(3000) ----
+# ---- 4. 启动：vite(9527，/api 代理到 9528) + 后端(9528) ----
 Step '启动开发服务（Ctrl+C 退出）'
-Write-Host '前端  http://localhost:5173'
-Write-Host 'API    http://localhost:3000'
+Write-Host '前端  http://localhost:9527'
+Write-Host 'API    http://localhost:9528'
 Push-Location $Root
 & npm run dev
 $code = $LASTEXITCODE

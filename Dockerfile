@@ -14,9 +14,9 @@ RUN npm ci --omit=dev
 COPY backend/src ./src
 COPY --from=build /app/dist /app/dist
 
-ENV PORT=3000 \
+ENV PORT=9528 \
     DATA_DIR=/app/data \
     NODE_ENV=production
-EXPOSE 3000
+EXPOSE 9528
 VOLUME /app/data
 CMD ["node", "src/index.mjs"]

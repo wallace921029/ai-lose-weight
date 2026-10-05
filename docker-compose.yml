@@ -3,7 +3,7 @@ services:
     build: .
     container_name: pofu
     ports:
-      - "3000:3000"
+      - "9528:9528"
     environment:
       - TZ=Asia/Shanghai
       - JWT_SECRET=${JWT_SECRET:-please-change-me-in-production}

@@ -87,14 +87,14 @@ The square feed also has a "friends only" filter; becoming friends posts a publi
 ```bash
 npm install                     # frontend deps
 npm --prefix backend install    # backend deps
-npm run dev                     # starts vite (5173) + API (3000) together
+npm run dev                     # starts vite (9527) + API (9528) together
 ```
 
 Production mode (single process, the backend serves the built assets):
 
 ```bash
 npm run build
-npm start                       # http://localhost:3000
+npm start                       # http://localhost:9528
 ```
 
 Demo data (three demo accounts with history):
@@ -114,7 +114,7 @@ Tests: `npm test` (settlement-engine unit tests + full HTTP smoke + full AI pipe
 JWT_SECRET=$(openssl rand -hex 32) docker compose up -d --build
 ```
 
-- Visit `http://<server-ip>:3000`
+- Visit `http://<server-ip>:9528`
 - SQLite data persists in `./data/` (backing up this directory backs up everything)
 - Environment variables: `JWT_SECRET` (must change in production), `TZ` (defaults to Asia/Shanghai)
 

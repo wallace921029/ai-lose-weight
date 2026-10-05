@@ -4,7 +4,7 @@ import path from 'node:path';
 import { apiRouter, SECRET, ensureFounder } from './routes.mjs';
 import { ROOT_DIR } from './db.mjs';
 
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT || 9528); // 前端 9527，后端 = 前端 + 1
 const app = express();
 app.disable('x-powered-by');
 app.use((req, res, next) => {

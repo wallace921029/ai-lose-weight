@@ -87,14 +87,14 @@ JWT_SECRET=随机长字符串
 ```bash
 npm install                # 前端依赖
 npm --prefix backend install   # 后端依赖
-npm run dev                # 同时启动 vite(5173) + API(3000)
+npm run dev                # 同时启动 vite(9527) + API(9528)
 ```
 
 生产模式（单进程，后端直接托管构建产物）：
 
 ```bash
 npm run build
-npm start                  # http://localhost:3000
+npm start                  # http://localhost:9528
 ```
 
 演示数据（三个有历史的演示账号）：
@@ -114,7 +114,7 @@ npm run seed
 JWT_SECRET=$(openssl rand -hex 32) docker compose up -d --build
 ```
 
-- 访问 `http://<服务器IP>:3000`
+- 访问 `http://<服务器IP>:9528`
 - SQLite 数据持久化在 `./data/`（备份这个目录就是备份全部）
 - 环境变量：`JWT_SECRET`（生产必改）、`TZ`（默认 Asia/Shanghai）
 
