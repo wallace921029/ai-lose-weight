@@ -6,7 +6,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 
 function Step($msg) { Write-Host "`n==> $msg" -ForegroundColor Cyan }
-function Fail($msg) { Write-Host $msg -ForegroundColor Red; exit 1 }
+# Fail 用 Write-Output（标准输出流）：交互窗口可见，重定向到日志文件也能看到失败原因
+function Fail($msg) { Write-Output "错误：$msg"; exit 1 }
 
 # ---- 1. Node 版本：node:sqlite 需要 >= 22.5（推荐 24+）----
 Step '检查 Node.js 版本'
@@ -45,10 +46,20 @@ if (-not (Test-Path "$Root\.env") -and (Test-Path "$Root\.env.example")) {
     Write-Host '已从 .env.example 创建 .env，邀请码/创始人密码等按需修改（.env 已 gitignore）'
 }
 
-# ---- 4. 启动：vite(9527，/api 代理到 9528) + 后端(9528) ----
+# ---- 4. 端口预检 + 启动 ----
+# 端口被占用时直接明确报错退出：否则 vite 会静默漂移到 9529+、后端 EADDRINUSE 崩溃，日志一团糟
+$frontPort = 9527
+$apiPort = 9528
+foreach ($p in @($frontPort, $apiPort)) {
+    if (Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue) {
+        Fail "端口 $p 已被占用 —— 很可能已有一个开发实例在运行。请先关闭旧的启动窗口；若就是想访问它：http://localhost:$frontPort"
+    }
+}
+
 Step '启动开发服务（Ctrl+C 退出）'
-Write-Host '前端  http://localhost:9527'
-Write-Host 'API    http://localhost:9528'
+# Write-Output（标准输出流）：交互窗口与重定向日志里都能看到地址
+Write-Output "前端  http://localhost:$frontPort"
+Write-Output "API    http://localhost:$apiPort"
 Push-Location $Root
 & npm run dev
 $code = $LASTEXITCODE
